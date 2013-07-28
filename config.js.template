@@ -1,0 +1,38 @@
+#copy this file in config.js and change the parameters as you like
+
+config = {
+    logLevel : 'debug', //Use 'debug' just to check if everything is working. Otherwise use 'info'
+
+    emailServer : { // To configure this see https://github.com/andris9/Nodemailer
+        type: 'SMTP',
+        parameters: {
+            service: "Gmail",
+            auth: {
+              user: "yourEmail@gmail.com",
+              pass: "yourPassword"
+            }
+        }
+    },
+
+    //It can be the same email in emailServer
+    toEmail: "notifyToThisEmail@gmail.com",
+
+    //Should I report errors reading the URLs? Useful in case the IP get blacklisted or for server problems.
+    notifyErrors : true,
+
+    rules: [
+        //You can add another rule for another URL
+        {url: "http://dataweek13-es2.eventbrite.com", //URL to scrape
+         //You can even use 
+         //  when: function (body, rule) {//return true when you want ot be notified } 
+         when: [{
+            notExist: "<script>display_error_msg_div",
+         }],
+         frequency: 60*60*1000 //Every hour
+        }
+    ]
+};
+
+module.exports = config;
+
+console.log ("Loading config from config.js");
