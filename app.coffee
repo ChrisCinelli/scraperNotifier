@@ -96,7 +96,7 @@ sendSlack = (options) ->
   hooks.map ((url) ->
     _data = _.extend {}, options.extra, data
     # You can define your own parsing function (for example to return attachemnts)
-    parseFn = options.rule.fn || options.parseFn || (ops) -> {text : (if options.prefix then options.prefix + " - " else "") + (options.text + "") }
+    parseFn = options.rule.fn || options.parseFn || (ops) -> ops.text = (if options.prefix then options.prefix + " - " else "") + (options.text + ""); return ops 
     _data = parseFn (_data)
     slackRequest url, _data
   )
@@ -202,7 +202,7 @@ for rule in config.rules
   monitorRule rule
 
 
-#In case we want to provide a web interface to this puppy... otherwise we can delete this
+# In case we want to provide a web interface to this puppy... otherwise we can delete this
 
 express = require('express')
 app = express()
@@ -215,11 +215,11 @@ app.engine('.html', require('ejs').__express)
 app.set('view engine', 'ejs') #Set auto extension to .ejs
 
 
-#test please!
-app.get '/test', (req, res) ->
-  res.send("Hello world!");
+# Are you OK?
+app.get '/status', (req, res) ->
+  res.json {status : "ok"}
 
-#listen on port 3000 for localhost or whatever for heroku deploy
+# listen on port 3000 for localhost or whatever for heroku deploy
 port = process.env.PORT || config.port || 3000
 app.listen port, () ->
   logger.log "Listening on " + port
