@@ -3,6 +3,18 @@
 config = {
     logLevel : 'debug', //Use 'debug' just to check if everything is working. Otherwise use 'info'
 
+    // Use your webhook!
+    slackWebhook : ['https://hooks.slack.com/services/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v'],
+    slackOpts : {
+      // Prefix added to the Slack's message when the condition match
+      prefix : "<https://www.a-link-here.com | This is a link that is relevant>",
+      // Extra parameters added to the payload to the Slack's webhook
+      extra : {
+        username : "Scraper Notifier",
+        icon_url : "http://images.all-free-download.com/images/graphiclarge/scraper_37742.jpg"
+      }
+    },
+
     emailServer : { // To configure this see https://github.com/andris9/Nodemailer
         type: 'SMTP',
         parameters: {
@@ -23,8 +35,8 @@ config = {
     rules: [
         //You can add another rule for another URL
         {url: "http://dataweek13-es2.eventbrite.com", //URL to scrape
-         //You can even use 
-         //  when: function (body, rule) {//return true when you want ot be notified } 
+         //You can even use
+         //  when: function (body, rule) {//return true when you want ot be notified }
          when: [{
             notExist: "<script>display_error_msg_div",
          }],
